@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import AuthLayout from '../layouts/AuthLayout';
 import Login from '../pages/auth/Login';
 import Register from '../pages/auth/Register';
@@ -16,6 +16,9 @@ export default function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Rute Redirect: Saat user membuka '/', otomatis diarahkan ke '/login' */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
+
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -24,7 +27,7 @@ export default function AppRouter() {
         </Route>
 
         {/* KOMENTARI DULU ROUTE MAIN APPLICATION */}
-        {/* <Route path="/" element={<Home />} /> */}
+        {/* <Route path="/home" element={<Home />} /> */}
         {/* <Route path="/map" element={<Map />} /> */}
         {/* <Route path="/prediction" element={<Prediction />} /> */}
         {/* <Route path="/history" element={<History />} /> */}

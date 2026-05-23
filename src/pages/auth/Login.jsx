@@ -1,13 +1,29 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, EyeOff, Eye, LogIn } from 'lucide-react';
 
 export default function Login() {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  
+  // State untuk menangkap input user
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  // Validasi: tombol aktif HANYA jika email dan password tidak kosong
+  const isFormValid = email.trim() !== '' && password.trim() !== '';
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isFormValid) {
+      // Panggil API Login di sini nantinya
+      console.log('Login berhasil:', email);
+      navigate('/'); // Pindah ke dashboard setelah login sukses
+    }
+  };
 
   return (
     <div className="flex flex-col items-center">
-      {/* Icon Top */}
       <div className="border border-red-200 rounded-xl p-3 mb-4 text-red-600">
         <LogIn size={28} />
       </div>
@@ -17,8 +33,7 @@ export default function Login() {
         Find available parking faster with real-time smart guidance
       </p>
 
-      <form className="w-full space-y-4">
-        {/* Email Input */}
+      <form className="w-full space-y-4" onSubmit={handleSubmit}>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-red-600">
             <Mail size={18} />
@@ -26,11 +41,13 @@ export default function Login() {
           <input
             type="email"
             placeholder="Email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="w-full pl-11 pr-4 py-3 rounded-xl border border-red-300 bg-transparent text-red-900 placeholder-red-400 focus:outline-none focus:ring-2 focus:ring-red-500"
           />
         </div>
 
-        {/* Password Input */}
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-red-600">
             <Lock size={18} />
@@ -38,6 +55,9 @@ export default function Login() {
           <input
             type={showPassword ? "text" : "password"}
             placeholder="Password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             className="w-full pl-11 pr-12 py-3 rounded-xl border border-red-300 bg-transparent text-red-900 placeholder-red-400 focus:outline-none focus:ring-2 focus:ring-red-500"
           />
           <button
@@ -57,7 +77,12 @@ export default function Login() {
 
         <button
           type="submit"
-          className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-xl transition duration-200 mt-2"
+          disabled={!isFormValid}
+          className={`w-full font-semibold py-3 rounded-xl transition duration-200 mt-2 ${
+            isFormValid 
+              ? 'bg-red-600 hover:bg-red-700 text-white' 
+              : 'bg-red-400 text-white/70 cursor-not-allowed'
+          }`}
         >
           Sign In
         </button>
